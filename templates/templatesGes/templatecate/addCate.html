@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<body>
+
+    <form method="post" id="FormsCate">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="nombreCate" class="form-label">Nombre de Categoría</label>
+            <input type="text" class="form-control" id="nombreCate" name="nombreCate" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+    </form>
+
+</body>
+<script>
+      $(document).ready(function() {
+      $('#FormsCate').submit(function(event) {
+  
+            $.ajax({
+                type: 'POST',
+                url: '/api/AddCate/',
+                data: $(this).serialize(),
+                success: function(data) {
+                    // Manejar la respuesta del servidor para el formulario de EntradaProducto
+                    console.log(data);
+                    location.reload();           
+
+                },
+                error: function(error) {
+                    // Manejar errores específicos y proporcionar mensajes descriptivos
+                    console.log("Error en el formulario de Producto:", error);
+                }
+            });
+
+
+        });
+    });
+</script>
+</html>

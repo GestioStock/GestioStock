@@ -1,0 +1,187 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
+    <script>
+        function openTab(tabName) {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            const tabContents = document.querySelectorAll('.tabcontent');
+            tabContents.forEach(content => content.style.display = 'none');
+
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById(`contenido${tabName.charAt(tabName.length - 1)}`).style.display = 'block';
+        }
+
+        function showContent(contentId) {
+            // Ocultar todos los contenidos
+            const contents = document.querySelectorAll('.content-container > div');
+            contents.forEach(content => content.style.display = 'none');
+
+            // Mostrar el contenido seleccionado
+            document.getElementById(contentId).style.display = 'block';
+        }
+        window.onload = function() {
+        openTab('tab3');
+    }
+    </script>
+
+
+</head>
+<body>
+    <div class="container-fluid background-effect" id="contenido">
+        <div class="row">
+                <nav class="navbar bg-body-tertiary">
+                    <div class="container-justify">
+                      <span class="navbar-brand mb-0 h1">Navbar</span>
+                    </div>
+                </nav>
+                <!-- Contenido aquí -->
+        </div>
+        <div class="row center-content h-100">
+            <div class="col-2 h-90" >
+                <div class="container h-90" id="menu">
+                <div class="row">
+                    <a class="col hover-effect" href="{% url 'resumen' %}">Resumen</a>                </div>
+                <div class="row">
+                    <a class="col hover-effect" href="{% url 'gestor' %}">Gestor</a>
+                </div>
+                <div class="row">
+                    <a class="col hover-effect" href="{% url 'buscarP' %}">Buscar</a>
+                </div>
+                <div class="row">
+                    <div class="col hover-effect " id="confi" href="">Configuración</div>
+                </div>
+                </div>
+            </div>
+            <div class="col">    
+                <div class="container" id="crud">
+                    <br><h2>Gestión de Productos</h2><br>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <li class="nav-item hover-effect">
+                                        <a id="tab1" href="{% url 'addProduct' %}" class="nav-link" aria-current="page" onclick="openTab('tab1')">
+                                            Añadir Producto
+                                        </a>
+                                    </li>
+                                    <li class="nav-item hover-effect">
+                                        <a id="tab2" href="{% url 'delProduct' %}" class="nav-link">
+                                            Eliminar Producto
+                                        </a>
+                                    </li>
+                                    <li class="nav-item hover-effect">
+                                        <a id="tab3" href="{% url 'cate' %}" class="nav-link" onclick="openTab('tab3')">
+                                            Categorias
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div id="contenido1" class="tabcontent" style="display: none;">
+                                    <div class="container">
+                                        <div id="addProduc" class="content-container-center">
+                                            <button class="button" onclick="showContent('content1.1')">Categorias</button>
+                                            <button class="button" onclick="showContent('content1.2')">Tipo de Producto</button>
+                                            <div id="content1.1" style="display: none;">
+                                                <!-- Contenido 1 -->
+                                                
+                                            </div>
+                                            <div id="content1.2" style="display: none;">
+                                                <!-- Contenido 2 -->
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="contenido2" class="tabcontent" style="display: none;">
+                                    <h3>Contenido de la Pestaña 2</h3>
+                                    <div class="container">
+                                        <div id="delProduct" class="content-container">
+                                            <button class="button" onclick="showContent('content2.1')">Mostrar Contenido 1</button>
+                                            <button class="button" onclick="showContent('content2.2')">Mostrar Contenido 2</button>
+                                            <div id="content2.1" style="display: none;">
+                                                <!-- Contenido 1 -->fa2
+                                            </div>
+                                            <div id="content2.2" style="display: none;">
+                                                <!-- Contenido 2 -->fa22
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="contenido3" class="tabcontent" style="display: none;">
+                                    <div class="container">
+                                        <div id="addcatedel" class="content-container">
+                                            <button class="button" onclick="showContent('content3.1')">Categorias</button>
+                                            <button class="button" onclick="showContent('content3.2')">Sub Categoria</button>
+                                            <div id="content3.1" style="display: none;">                   
+                                                <div class="col">
+                                                <h5>Añadir Categoria</h5>
+                                                <div class="custom-table">
+                                                    {% include 'templatesGes/templatecate/addCate.html' %}
+                                                    </div>
+                                                    
+                                                    <h5>Eliminar Categoria</h5>
+                                                    
+                                                    {% include 'templatesGes/templatecate/delCate.html' %}
+                                                    
+                                                    <h5>Buscar Categoria</h5> 
+                                                    
+                                                    {% include 'templatesGes/templatecate/cateview.html' %}
+
+                                                        <!-- Contenido HTML -->
+                                                    
+                                                </div>
+                                                 <div class="col"> {% csrf_token %}
+                                                            
+                                                    </div>
+                                                <div class="col"> 
+                                                            
+
+                                                    </div> 
+                                                 
+                                                
+                                            </div>
+                                            <div id="content3.2" style="display: none;">
+                                                <!-- Contenido 2 --> 
+                                                <h5 style="margin-top: 20px;">Añadir Sub Categoria</h5>
+
+                                                {% include 'templatesGes/templatecate/addSubCate.html' %}
+                                                
+                                                <h5 style="margin-top: 20px;">Eliminar Categoria</h5>
+
+                                                
+                                                {% include 'templatesGes/templatecate/delSubCate.html' %}
+                                                
+                                                <h5 style="margin-top: 20px;">Buscar Categoria</h5> 
+
+                                                
+                                                {% include 'templatesGes/templatecate/subcateview.html' %}
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

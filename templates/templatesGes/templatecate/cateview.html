@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+
+<body class="col-6">
+    <div class="custom-table">
+    <table id="miTabla" class="table table-bordered mb-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los datos de la tabla se cargarán aquí automáticamente -->
+        </tbody>
+    </table>
+</div>
+
+    <!-- Agrega este script en tu HTML para incluir DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+  
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>  
+    
+    
+    <script>
+        $(document).ready(function () {
+    var tabla = $('#miTabla').DataTable({
+        ajax: {
+            url: '/api/categorias/',
+            dataSrc: '',
+            error: function (xhr, error, thrown) {
+                console.log('Error en la solicitud Ajax:', error);
+                console.log('Detalles:', xhr.responseText);
+            }
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'nombre' },
+        ],
+        language: {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando del 0 al 0 de 0 registros",
+            "sInfoFiltered": "(Total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad"
+            }
+        },
+        searching: true,
+        initComplete: function (settings, json) {
+            console.log('Respuesta de la API:', json);
+        }
+    });
+
+    // Personaliza el formulario de búsqueda con clases de Bootstrap
+    var searchInput = $('div.dataTables_filter input');
+    searchInput.attr('class', 'form-control form-control-sm');
+    searchInput.attr('placeholder', 'Buscar');
+});
+
+    </script>
+    
+
+    
+</body>
+</html>

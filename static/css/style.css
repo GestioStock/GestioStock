@@ -1,0 +1,157 @@
+/* Estilo para elementos con clase "hover-effect" */
+.hover-effect {
+    background-color: lightgreen;
+    transition: background-color 0.3s;
+    border: 1px solid darkgreen;
+    padding: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.hover-effect:hover {
+    background-color: darkgreen;
+}
+a{
+    background-color: lightgreen;
+
+}
+#menu{
+    height: 90vh;
+}
+h5{
+    font-weight: bold;
+    text-align: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Estilo para el fondo general con clase "background-effect" */
+.background-effect {
+    background-color: lightblue;
+}
+
+/* Estilo general del cuerpo (body) */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+.col {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+/* Estilo general para contenedores (div) */
+.container {
+    background-color: lightgreen;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+}
+
+/* Estilo para la barra de navegación (navbar) */
+.navbar {
+    background-color: #333;
+}
+
+/* Estilo para el logotipo en la barra de navegación (navbar-brand) */
+.navbar-brand {
+    color: white;
+}
+
+/* Estilo para tablas */
+.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border: 1px solid #ddd;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* Estilo para celdas de encabezado de tabla (th) */
+.custom-table th {
+    background-color: #f2f2f2;
+    color: mediumseagreen;
+    padding: 10px;
+    text-align: right;
+}
+
+/* Estilo para celdas de datos de tabla (td) */
+.custom-table td {
+    border: 0px solid #ddd;
+    padding: 8px;
+}
+
+/* Cambiar el color de fondo de las filas alternas (tr:nth-child(even)) */
+.custom-table tr{
+    background-color: #f2f2f2;
+}
+
+/* Estilo para formularios */
+form {
+    width: 100%;
+    margin: 10px;
+    padding: 0px;
+}
+
+/* Estilo para etiquetas de formulario (label) */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Estilo para campos de entrada de formulario (input, select, textarea) */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Estilo para botones de formulario (input[type="submit"]) */
+input[type="submit"] {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Cambiar el color de fondo del botón cuando se pasa el ratón (input[type="submit"]:hover) */
+input[type="submit"]:hover {
+    background-color: #555;
+}
+/* Estilo para un botón */
+.button {
+    display: inline-block;
+    padding: 10px 20px; /* Espaciado interno del botón */
+    background-color: #65aad8; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer;
+    font-size: 16px; /* Tamaño de fuente */
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+/* Cambiar el color de fondo del botón cuando se pasa el ratón (opcional) */
+.button:hover {
+    background-color: #258cd1;
+}
+
+.td {
+    background-color: #ddd;
+    width: 100%;
+    height: 50px;
+    overflow: auto;
+    margin-bottom: 20px;
+}

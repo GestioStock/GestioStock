@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<body>
+
+    <form id="FormsSubCate">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="nombreSubCate" class="form-label">Nombre de Sub - Categoría</label>
+            <input type="text" class="form-control" id="nombreSubCate" name="nombreSubCate" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Agregar Sub - Categoria</button>
+    </form>
+
+</body>
+
+<script>
+    $(document).ready(function() {
+        $('#FormsSubCate').submit(function(event) {
+            event.preventDefault();  // Evita el envío tradicional del formulario
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/AddSubCate/',  // Asegúrate de tener la barra inicial (/) para la URL
+                data: $(this).serialize(),
+                success: function(data) {
+                    console.log(data);
+                    location.reload();           
+
+                },
+                error: function(error) {
+                    console.log("Error en el formulario de Sub-Categoría:", error);
+                }
+            });
+        });
+    });
+</script>
+
+</html>

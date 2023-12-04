@@ -1,0 +1,445 @@
+<!-- addProduct.html -->
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+    function openTab(tabName) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => link.classList.remove('active'));
+
+        const tabContents = document.querySelectorAll('.tabcontent');
+        tabContents.forEach(content => content.style.display = 'none');
+
+        document.getElementById(tabName).classList.add('active');
+        document.getElementById(`contenido${tabName.charAt(tabName.length - 1)}`).style.display = 'block';
+    }
+
+    function showContent(contentId) {
+        // Ocultar todos los contenidos
+        const contents = document.querySelectorAll('.content-container > div');
+        contents.forEach(content => content.style.display = 'none');
+
+        // Mostrar el contenido seleccionado
+        document.getElementById(contentId).style.display = 'block';
+    }
+    window.onload = function() {
+    openTab('tab1');
+}
+
+    // Función para generar un ID numérico único con fecha y hora
+    function generateNumericIdWithTimestamp() {
+          var currentTimestamp = new Date().getTime();
+          var randomId = Math.floor(Math.random() * 100);
+          var combinedId = currentTimestamp + '' + randomId;
+          return combinedId;
+      }
+</script>
+
+<script>
+     $(document).ready(function() {
+        $('#allFormsFecha').submit(function(event) {
+            event.preventDefault();
+
+            var idProducFecha = generateNumericIdWithTimestamp();
+
+            $('#product_fecha').val(idProducFecha);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/addProduct/',
+                data: $(this).serialize(),
+                success: function(data) {
+                    // Realiza acciones adicionales o redirecciona según necesites
+                    console.log(data);
+
+                    alert('Formulario enviado con éxito');
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+
+            $.ajax({
+            type: 'POST',
+            url: '/api/addProductosFecha/',
+            data: {
+                idProducFecha: idProducFecha,
+                fechaElavoracionP: $('#fechaElavoracionP').val(),
+                fechaVencimientoP: $('#fechaVencimientoP').val(),
+                // Otros campos de ProductosdePila aquí
+            }
+        });
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/addEntradaProducto/',
+                data: $(this).serialize(),
+                success: function(data) {
+                    // Realiza acciones adicionales o redirecciona según necesites
+                    console.log(data);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+<script>
+
+  
+      $(document).ready(function() {
+      $('#allFormsPila').submit(function(event) {
+          event.preventDefault();
+  
+          // Obtén el valor del campo de id
+          var productPilaId = generateNumericIdWithTimestamp();
+
+  
+          // Asigna el valor al campo oculto
+          $('#product_pila').val(productPilaId);
+  
+            
+          $.ajax({
+            type: 'POST',
+            url: '/api/addProductosPila/',
+            data: {
+                idPila: productPilaId,
+                ControlPila: $('#ControlPila').val(),
+                PesoPila: $('#PesoPila').val(),
+                // Otros campos de ProductosdePila aquí
+            }
+        });
+
+            
+            $.ajax({
+                type: 'POST',
+                url: '/api/addEntradaProducto/',
+                data: $(this).serialize(),
+                success: function(data) {
+                    // Manejar la respuesta del servidor para el formulario de EntradaProducto
+                    console.log(data);
+                },
+                error: function(error) {
+                    // Manejar errores específicos y proporcionar mensajes descriptivos
+                    console.log("Error en el formulario de EntradaProducto:", error);
+                }
+            });
+
+
+            
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/addProduct/',
+                data: $(this).serialize(),
+                success: function(data) {
+                    // Manejar la respuesta del servidor para el formulario de EntradaProducto
+                    console.log(data);
+
+                    alert('Formulario enviado con éxito');
+                    location.reload();
+
+                },
+                error: function(error) {
+                    // Manejar errores específicos y proporcionar mensajes descriptivos
+                    console.log("Error en el formulario de Producto:", error);
+                }
+            });
+
+
+        });
+    });
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Cuando la página se carga, realiza una solicitud AJAX para obtener las categorías
+        $.ajax({
+            type: 'GET',
+            url: '/api/categorias/',  // Ajusta la URL según tu configuración
+            success: function(data) {
+                // Itera sobre las categorías y agrega opciones al select
+                $.each(data, function(index, categoria) {
+                    $('#categoria').append('<option value="' + categoria.nombre + '">' + categoria.nombre + '</option>');
+                });
+
+                $.each(data, function(index, categoria) {
+                    $('#categoriaP').append('<option value="' + categoria.nombre + '">' + categoria.nombre + '</option>');
+                });
+
+            },
+            error: function(error) {
+                console.log("Error al cargar las categorías:", error.responseText);
+            }
+        });
+    });
+
+
+    $(document).ready(function() {
+        // Cuando la página se carga, realiza una solicitud AJAX para obtener las subcategorías
+        $.ajax({
+            type: 'GET',
+            url: '/api/subcategorias/',  // Ajusta la URL según tu configuración
+            success: function(data) {
+                // Itera sobre las subcategorías y agrega opciones al select
+                $.each(data, function(index, subcategoria) {
+                    $('#subcategoria').append('<option value="' + subcategoria.nombre + '">' + subcategoria.nombre + '</option>');
+                });
+
+                $.each(data, function(index, subcategoria) {
+                    $('#subcategoriaP').append('<option value="' + subcategoria.nombre + '">' + subcategoria.nombre + '</option>');
+                });
+
+            },
+            error: function(error) {
+                console.log("Error al cargar las subcategorías:", error.responseText);
+            }
+        });
+    });
+</script>
+
+
+
+
+<div class="container-fluid background-effect" id="contenido">
+    <div class="row">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-justify">
+                  <span class="navbar-brand mb-0 h1">Navbar</span>
+                </div>
+            </nav>
+            <!-- Contenido aquí -->
+    </div>
+    <div class="row center-content h-100">
+        <div class="col-2 h-90" >
+            <div class="container h-90" id="menu">
+            <div class="row">
+                <a class="col hover-effect" href="{% url 'resumen' %}">Resumen</a>
+            </div>
+            <div class="row">
+                <a class="col hover-effect" href="{% url 'gestor' %}">Gestor</a>
+            </div>
+            <div class="row">
+                <a class="col hover-effect" href="{% url 'buscarP' %}">Buscar</a>
+            </div>
+            <div class="row">
+                <div class="col hover-effect " id="confi" href="">Configuración</div>
+            </div>
+            </div>
+        </div>
+        <div class="col">
+        <div class="container" id="contenido">
+    <div class="container" id="crud">
+        <br><h2>Gestión de Productos</h2><br>
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item hover-effect">
+                                <a id="tab1" href="{% url 'addProduct' %}" class="nav-link" aria-current="page" onclick="openTab('tab1')">
+                                    Añadir Producto
+                                </a>
+                            </li>
+                            <li class="nav-item hover-effect">
+                                <a id="tab2" href="{% url 'delProduct' %}" class="nav-link" >
+                                    Eliminar Producto
+                                </a>
+                            </li>
+                            <li class="nav-item hover-effect">
+                                <a id="tab3" href="{% url 'cate' %}" class="nav-link" onclick="openTab('tab3')">
+                                    Categorias
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div id="contenido1" class="tabcontent"style="display: none;">
+                            <div class="container">
+                                <div id="addProduc" class="content-container">
+                                    <button class="button" onclick="showContent('content1.1')">Añadir producto de Pila</button>
+                                    <button class="button" onclick="showContent('content1.2')">Añadir producto de Fecha</button>
+                                    <div id="content1.1" style="display: none;">
+                                        <!-- Contenido 1 -->
+                                        <div class="card-body">
+                                            <form method="post" id="allFormsPila">
+                                                {% csrf_token %}
+                                                
+                                                <div class="mb-3">
+                                                    <label for="ControlPila" class="form-label">Cantidad de apilamiento</label>
+                                                    <input type="number" class="form-control" id="ControlPila" name="ControlPila" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="PesoPila" class="form-label">Peso (kilos)</label>
+                                                    <input type="number" class="form-control" id="PesoPila" name="PesoPila" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <!-- Campos para el modelo EntradaProducto -->
+                                                    <label for="rutPersona" class="form-label">Rut de la Persona</label>
+                                                    <input type="text" class="form-control" id="rutPersona" name="rutPersona" required>
+                                                    <label for="fechaEntrada" class="form-label">Fecha de Entrada</label>
+                                                    <input type="date" class="form-control" id="fechaEntrada" name="fechaEntrada" required>
+                                                </div>
+                                                <!-- Agrega campos según tu modelo Producto -->
+                                                <div class="mb-3">
+                                                    <label for="nombreProduc" class="form-label">Nombre del Producto</label>
+                                                    <input type="text" class="form-control" id="nombreProduc" name="nombreProduc" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="categoriaP">Categoría</label>
+                                                    <select class="form-select" id="categoriaP" name="cate">
+                                                        <option value="" hidden selected>Seleccione</option>                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="subcategoriaP">Subcategoría</label>
+                                                    <select class="form-select" id="subcategoriaP" name="subcate">
+                                                        <option value="" hidden selected>Seleccione</option>
+                                                    </select>
+                                                </div>
+                                                
+
+                                                <div class="mb-3">
+                                                    <label for="cantidadProducto" class="form-label">Cantidad del Producto</label>
+                                                    <input type="number" class="form-control" id="cantidadProducto" name="cantidadProducto" required>
+                                                </div>
+                                                <div class="mb-3 form-check">
+                                                    <input type="checkbox" class="form-check-input" id="activo" name="activo">
+                                                    <label class="form-check-label" for="activo">Activo</label>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Detalle" class="form-label">Detalle</label>
+                                                    <textarea class="form-control" id="Detalle" name="Detalle" rows="4"></textarea>
+                                                </div>
+                                                <!-- Agrega más campos según tus necesidades -->
+                                                <input type="hidden" id="product_pila" name="product_pila" value="">
+
+                                        
+                                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+                                    <div id="content1.2" style="display: none;">
+                                        <!-- Contenido 2 -->
+                                        
+
+                                        <div class="card-body">
+                                            <form method="post" id="allFormsFecha">
+                                                {% csrf_token %}
+                                                <!-- Agrega campos según tu modelo Producto -->
+                                                <div class="mb-3">
+                                                    <label for="nombreProduc" class="form-label">Nombre del Producto</label>
+                                                    <input type="text" class="form-control" id="nombreProduc" name="nombreProduc" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <!-- Campos para el modelo ProductosdeFecha -->
+                                                    <label for="fechaElavoracionP" class="form-label">Fecha de Elaboración</label>
+                                                    <input type="date" class="form-control" id="fechaElavoracionP" name="fechaElavoracionP" required>
+                                                    <label for="fechaVencimientoP" class="form-label">Fecha de Vencimiento</label>
+                                                    <input type="date" class="form-control" id="fechaVencimientoP" name="fechaVencimientoP" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <!-- Campos para el modelo EntradaProducto -->
+                                                    <label for="rutPersona" class="form-label">Rut de la Persona</label>
+                                                    <input type="text" class="form-control" id="rutPersona" name="rutPersona" required>
+                                                    <label for="fechaEntrada" class="form-label">Fecha de Entrada</label>
+                                                    <input type="date" class="form-control" id="fechaEntrada" name="fechaEntrada" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="cantidadProducto" class="form-label">Cantidad del Producto</label>
+                                                    <input type="number" class="form-control" id="cantidadProducto" name="cantidadProducto" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="categoria">Categoría</label>
+                                                    <select class="form-select" id="categoria" name="cate">
+                                                        <option value="" hidden selected>Seleccione</option>                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="subcategoria">Subcategoría</label>
+                                                    <select class="form-select" id="subcategoria" name="subcate">
+                                                        <option value="" hidden selected>Seleccione</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3 form-check">
+                                                    <input type="checkbox" class="form-check-input" id="activo" name="activo">
+                                                    <label class="form-check-label" for="activo">Activo</label>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Detalle" class="form-label">Detalle</label>
+                                                    <textarea class="form-control" id="Detalle" name="Detalle" rows="4"></textarea>
+                                                </div>
+                                                <!-- Agrega más campos según tus necesidades -->
+                                                
+                                                <input type="hidden" id="product_fecha" name="product_fecha" value="">
+            
+                                        
+                                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="contenido2" class="tabcontent" style="display: none;">
+                            <h3>Contenido de la Pestaña 2</h3>
+                            <div class="container">
+                                <div id="delProduct" class="content-container">
+                                    <button onclick="showContent('content2.1')">Mostrar Contenido 1</button>
+                                    <button onclick="showContent('content2.2')">Mostrar Contenido 2</button>
+                                    <div id="content2.1" style="display: none;">
+                                        <!-- Contenido 1 -->fa2
+                                    </div>
+                                    <div id="content2.2" style="display: none;">
+                                        <!-- Contenido 2 -->fa22
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="contenido3" class="tabcontent" style="display: none;">
+                            <h3>Contenido de la Pestaña 3</h3>
+                            <div class="container">
+                                <div id="addcatedel" class="content-container">
+                                    <button onclick="showContent('content3.1')">Mostrar Contenido 1</button>
+                                    <button onclick="showContent('content3.2')">Mostrar Contenido 2</button>
+                                    <div id="content3.1" style="display: none;">
+                                        <!-- Contenido 1 -->fa3
+                                    </div>
+                                    <div id="content3.2" style="display: none;">
+                                        <!-- Contenido 2 -->fa33
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+        </div>
+    </div>
+</div>
