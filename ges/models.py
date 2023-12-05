@@ -17,6 +17,8 @@ class Producto(models.Model):
     cantidadProducto = models.IntegerField()
     activo = models.BooleanField(default=True)
     Detalle = models.TextField(max_length=500, blank=True, null=True)
+    product_fecha = models.ForeignKey(ProductosdeFecha, on_delete=models.CASCADE, null=True, blank=True)
+    product_pila = models.ForeignKey(ProductosdePila, on_delete=models.CASCADE, null=True, blank=True)
 
     cate = models.CharField(max_length=50)
 
