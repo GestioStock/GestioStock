@@ -51,14 +51,14 @@ $(document).ready(function () {
         ajax: {
             type: 'GET',
             url: '/api/tabla-combinada/',
-            dataSrc: 'data',
+            dataSrc: 'dataB',
             error: function (xhr, error, thrown) {
                 console.log('Error en la solicitud Ajax:', error);
                 console.log('Detalles:', xhr.responseText);
             }
         },
         columns: [
-            { data: 'idProduc' },
+            { data: 'idProduc', defaultContent: '' },
             { data: 'fechaEntrada' },
             { data: 'nombreProducto' },
             { data: 'cantidad' },

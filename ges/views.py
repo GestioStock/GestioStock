@@ -184,6 +184,7 @@ class TablaCombinadaAPIView(APIView):
 
         combined_data_pila = []
         combined_data_fecha = []
+        combined_data = []
 
         for producto in productos_serializer.data:
             entrada_producto_relacionada = next((ep for ep in entradas_producto_serializer.data if ep['idEntrada'] == producto['idProduc']), None)
@@ -209,6 +210,7 @@ class TablaCombinadaAPIView(APIView):
                         'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
                     })
                     combined_data_pila.append(combined_item_pila)
+                    combined_data.append(combined_item_pila)
                 except ProductosdePila.DoesNotExist:
                     pass
 
@@ -235,10 +237,11 @@ class TablaCombinadaAPIView(APIView):
                         'fechaVencimientoP': fecha.fechaVencimientoP,
                     })
                     combined_data_fecha.append(combined_item_fecha)
+                    combined_data.append(combined_item_fecha)
                 except ProductosdeFecha.DoesNotExist:
                     pass
 
-        data = {'data_pila': combined_data_pila, 'data_fecha': combined_data_fecha}
+        data = {'data_pila': combined_data_pila, 'data_fecha': combined_data_fecha, 'dataB' : combined_data}
         return JsonResponse(data, safe=False)
 
 # registrar usuario
@@ -264,7 +267,7 @@ def resumen(request):
     print(productos)  # Verifica en la consola de tu servidor Django si se están recuperando productos.
     return render(request, 'templatesop/resumen.html', {'productos': productos})
 
-# resumen de la javi
+# resumen de la javiera
 class ProductoListAPI(View):
     def get(self, request):
         productos = Producto.objects.all()
