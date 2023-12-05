@@ -148,7 +148,9 @@ def buscarP(request):
     
     return render(request, 'templatesop/buscar.html')
 
-HEAD
+
+<<<<<<< HEAD
+
 class CambiarActivoAPIView(APIView):
     def post(self, request, format=None):
         producto_id = request.data.get('idProduc')
