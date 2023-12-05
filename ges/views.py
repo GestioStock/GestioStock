@@ -175,47 +175,54 @@ class TablaCombinadaAPIView(APIView):
     def get(self, request, format=None):
         productos = Producto.objects.filter(activo=True)
         productos_serializer = ProductoSerializer(productos, many=True)
-
+        
+        entradas_producto = EntradaProducto.objects.all()
+        entradas_producto_serializer = EntradaProductoSerializer(entradas_producto, many=True)
+        
         productos_fecha = ProductosdeFecha.objects.all()
         productos_fecha_serializer = ProductosdeFechaSerializer(productos_fecha, many=True)
 
-        productos_pila = ProductosdePila.objects.all()
-        productos_pila_serializer = ProductosdePilaSerializer(productos_pila, many=True)
-
-        entradas_producto = EntradaProducto.objects.all()
-        entradas_producto_serializer = EntradaProductoSerializer(entradas_producto, many=True)
-
         combined_data_pila = []
         combined_data_fecha = []
-        combined_data = []
-        
 
         for producto in productos_serializer.data:
             entrada_producto_relacionada = next((ep for ep in entradas_producto_serializer.data if ep['idEntrada'] == producto['idProduc']), None)
 
+            combined_item_pila = {
+                'id': producto['idProduc'],
+                'nombre': producto['nombreProduc'],
+                'nombreProducto': producto['nombreProduc'],
+                'cantidad': producto['cantidadProducto'],
+                'cate': producto['cate'],
+                'subcate': producto['subcate'],
+                'detalle': producto['Detalle'],
+                'activo': producto['activo'],
+                'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
+            }
+
             if producto['product_pila']:
                 try:
                     pila = ProductosdePila.objects.get(idPila=int(producto['product_pila']))
-
-                    combined_item = {
-                        'idProduc': producto['idProduc'],
-                        'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
-                        'nombreProducto': producto['nombreProduc'],
-                        'cantidad': producto['cantidadProducto'],
-                        'cate': producto['cate'],
-                        'subcate': producto['subcate'],
+                    combined_item_pila.update({
                         'peso': pila.PesoPila,
                         'controlPila': pila.ControlPila,
-                        'detalle': producto['Detalle'],
-                        'activo': producto['activo'],
-                    }
-
-                    combined_data_pila.append(combined_item)
-                    combined_data.append(combined_item)
-
-
+                        'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
+                    })
+                    combined_data_pila.append(combined_item_pila)
                 except ProductosdePila.DoesNotExist:
                     pass
+
+            combined_item_fecha = {
+                'id': producto['idProduc'],
+                'nombre': producto['nombreProduc'],
+                'nombreProducto': producto['nombreProduc'],
+                'cantidad': producto['cantidadProducto'],
+                'cate': producto['cate'],
+                'subcate': producto['subcate'],
+                'detalle': producto['Detalle'],
+                'activo': producto['activo'],
+                'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
+            }
 
             if producto['product_fecha']:
                 try:
@@ -223,29 +230,17 @@ class TablaCombinadaAPIView(APIView):
                         (pf for pf in productos_fecha_serializer.data if pf['idProducFecha'] == producto['product_fecha']), None)
 
                     fecha = ProductosdeFecha.objects.get(idProducFecha=int(producto['product_fecha']))
-
-                    combined_item = {
-                        'idProduc': producto['idProduc'],
-                        'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
-                        'nombreProducto': producto['nombreProduc'],
-                        'cantidad': producto['cantidadProducto'],
-                        'cate': producto['cate'],
-                        'subcate': producto['subcate'],
-                        'detalle': producto['Detalle'],
-                        'activo': producto['activo'],
+                    combined_item_fecha.update({
                         'fechaElavoracionP': fecha.fechaElavoracionP,
                         'fechaVencimientoP': fecha.fechaVencimientoP,
-                    }
-
-                    combined_data_fecha.append(combined_item)
-                    combined_data.append(combined_item)
-
-
+                    })
+                    combined_data_fecha.append(combined_item_fecha)
                 except ProductosdeFecha.DoesNotExist:
                     pass
 
-        return Response({'pila': combined_data_pila, 'fecha': combined_data_fecha, 'data': combined_data})
-        
+        data = {'data_pila': combined_data_pila, 'data_fecha': combined_data_fecha}
+        return JsonResponse(data, safe=False)
+
 # registrar usuario
 def registro(request):
     data = {
@@ -268,3 +263,17 @@ def resumen(request):
     productos = Producto.objects.all()
     print(productos)  # Verifica en la consola de tu servidor Django si se están recuperando productos.
     return render(request, 'templatesop/resumen.html', {'productos': productos})
+
+# resumen de la javi
+class ProductoListAPI(View):
+    def get(self, request):
+        productos = Producto.objects.all()
+        data = [{'id': producto.idProduc, 'nombre': producto.nombreProduc,
+                        'nombreProducto':  producto.nombreProduc,
+                        'cantidad':  producto.cantidadProducto,
+                        'cate':  producto.cate,
+                        'subcate': producto.subcate,
+                        'detalle': producto.Detalle,
+                        'activo': producto.activo,} for producto in productos]
+        
+        return JsonResponse(data, safe=False)

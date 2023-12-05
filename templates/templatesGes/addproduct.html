@@ -48,6 +48,7 @@
             var idProducFecha = generateNumericIdWithTimestamp();
 
             $('#product_fecha').val(idProducFecha);
+            $('#idProducFecha').val(idProducFecha);
 
             $.ajax({
                 type: 'POST',
@@ -69,12 +70,15 @@
             $.ajax({
             type: 'POST',
             url: '/api/addProductosFecha/',
-            data: {
-                idProducFecha: idProducFecha,
-                fechaElavoracionP: $('#fechaElavoracionP').val(),
-                fechaVencimientoP: $('#fechaVencimientoP').val(),
-                // Otros campos de ProductosdePila aquí
-            }
+            data: $(this).serialize(),
+                success: function(data) {
+                    // Manejar la respuesta del servidor para el formulario de EntradaProducto
+                    console.log(data);
+                },
+                error: function(error) {
+                    // Manejar errores específicos y proporcionar mensajes descriptivos
+                    console.log("Error en el formulario de Profuctosfecha:", error);
+                }
         });
 
             $.ajax({
@@ -109,17 +113,21 @@
   
           // Asigna el valor al campo oculto
           $('#product_pila').val(productPilaId);
+          $('#idPila').val(productPilaId);
   
             
           $.ajax({
             type: 'POST',
             url: '/api/addProductosPila/',
-            data: {
-                idPila: productPilaId,
-                ControlPila: $('#ControlPila').val(),
-                PesoPila: $('#PesoPila').val(),
-                // Otros campos de ProductosdePila aquí
-            }
+            data: $(this).serialize(),
+                success: function(data) {
+                    // Manejar la respuesta del servidor para el formulario de EntradaProducto
+                    console.log(data);
+                },
+                error: function(error) {
+                    // Manejar errores específicos y proporcionar mensajes descriptivos
+                    console.log("Error en el formulario de productospila:", error);
+                }
         });
 
             
@@ -326,6 +334,7 @@
                                                 </div>
                                                 <!-- Agrega más campos según tus necesidades -->
                                                 <input type="hidden" id="product_pila" name="product_pila" value="">
+                                                <input type="hidden" id="idPila" name="idPila" value="">
 
                                         
                                                 <button type="submit" class="btn btn-primary">Agregar Producto</button>
@@ -388,6 +397,8 @@
                                                 <!-- Agrega más campos según tus necesidades -->
                                                 
                                                 <input type="hidden" id="product_fecha" name="product_fecha" value="">
+                                                <input type="hidden" id="idProducFecha" name="idProducFecha" value="">
+
             
                                         
                                                 <button type="submit" class="btn btn-primary">Agregar Producto</button>

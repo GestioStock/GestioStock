@@ -17,9 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from ges import views
-from ges.views import ProductoListCreateView,ProductosdeFechaCreateView,EntradaProductoCreateView, ProductosdePilaCreateView,AddCate,CategoriaDeleteView,CategoriaListAPI,SubCategoriaListAPI, SubcategoriaDeleteView,AddSubCate,TablaCombinadaAPIView,CambiarActivoAPIView
+from ges.views import ProductoListCreateView,ProductosdeFechaCreateView,EntradaProductoCreateView, ProductosdePilaCreateView,AddCate,CategoriaDeleteView,CategoriaListAPI,SubCategoriaListAPI, SubcategoriaDeleteView,AddSubCate,TablaCombinadaAPIView,CambiarActivoAPIView, ProductoListAPI
 
-from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -51,9 +50,11 @@ urlpatterns = [
     path('buscar/', views.buscarP, name='buscarP'),
     path('api/tabla-combinada/', TablaCombinadaAPIView.as_view(), name='tabla_combinada'),
     path('api/cambiar-activo/', CambiarActivoAPIView.as_view(), name='cambiar_activo'),
+    path('api/produc/', ProductoListAPI.as_view()),
 
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.registro, name='registro'),
+
 
     path('resumen/', views.resumen, name='resumen'), 
        
