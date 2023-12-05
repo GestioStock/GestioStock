@@ -86,10 +86,11 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'bcm0fjtlzygfu5vej6hp',
-        'USER':'usfcwxebdj4cpuji',
-        'PASSWORD':'UEbw5dg6yDLmqpFmLTYD',
-        'PORT':3306
+        'NAME':'railway',
+        'USER':'root',
+        'PASSWORD':'A1-gEhd54a66EedHHH6g3Bd23-FFH26f',
+        'HOST' : 'viaduct.proxy.rlwy.net',
+        'PORT':13564
 
     }
 }
@@ -141,3 +142,9 @@ STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# pips install que se utilizan
+#pip install djangorestframework
+#pip install pillow
+#pip install django-crispy-forms
+#pip install django-crispy-forms==1.10.0

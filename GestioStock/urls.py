@@ -55,6 +55,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.registro, name='registro'),
 
-    path('resumen/', TemplateView.as_view(template_name='templatesop/resumen.html'), name='resumen'),
-    
+    path('resumen/', views.resumen, name='resumen'), 
+       
 ]

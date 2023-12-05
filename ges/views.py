@@ -149,75 +149,7 @@ def buscarP(request):
     return render(request, 'templatesop/buscar.html')
 
 
-class TablaCombinadaAPIView(APIView):
-    def get(self, request, format=None):
-        productos = Producto.objects.filter(activo=True)
-        productos_serializer = ProductoSerializer(productos, many=True)
-
-        productos_fecha = ProductosdeFecha.objects.all()
-        productos_fecha_serializer = ProductosdeFechaSerializer(productos_fecha, many=True)
-
-        productos_pila = ProductosdePila.objects.all()
-        productos_pila_serializer = ProductosdePilaSerializer(productos_pila, many=True)
-
-        entradas_producto = EntradaProducto.objects.all()
-        entradas_producto_serializer = EntradaProductoSerializer(entradas_producto, many=True)
-
-        combined_data_pila = []
-        combined_data_fecha = []
-
-        for producto in productos_serializer.data:
-            entrada_producto_relacionada = next((ep for ep in entradas_producto_serializer.data if ep['idEntrada'] == producto['idProduc']), None)
-
-            if producto['product_pila']:
-                try:
-                    pila = ProductosdePila.objects.get(idPila=int(producto['product_pila']))
-
-                    combined_item = {
-                        'idProduc': producto['idProduc'],
-                        'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
-                        'nombreProducto': producto['nombreProduc'],
-                        'cantidad': producto['cantidadProducto'],
-                        'cate': producto['cate'],
-                        'subcate': producto['subcate'],
-                        'peso': pila.PesoPila,
-                        'controlPila': pila.ControlPila,
-                        'detalle': producto['Detalle'],
-                        'activo': producto['activo'],
-                    }
-
-                    combined_data_pila.append(combined_item)
-
-                except ProductosdePila.DoesNotExist:
-                    pass
-
-            if producto['product_fecha']:
-                try:
-                    producto_fecha_relacionado = next(
-                        (pf for pf in productos_fecha_serializer.data if pf['idProducFecha'] == producto['product_fecha']), None)
-
-                    fecha = ProductosdeFecha.objects.get(idProducFecha=int(producto['product_fecha']))
-
-                    combined_item = {
-                        'idProduc': producto['idProduc'],
-                        'fechaEntrada': entrada_producto_relacionada['fechaEntrada'] if entrada_producto_relacionada else None,
-                        'nombreProducto': producto['nombreProduc'],
-                        'cantidad': producto['cantidadProducto'],
-                        'cate': producto['cate'],
-                        'subcate': producto['subcate'],
-                        'detalle': producto['Detalle'],
-                        'activo': producto['activo'],
-                        'fechaElavoracionP': fecha.fechaElavoracionP,
-                        'fechaVencimientoP': fecha.fechaVencimientoP,
-                    }
-
-                    combined_data_fecha.append(combined_item)
-
-                except ProductosdeFecha.DoesNotExist:
-                    pass
-
-        return Response({'pila': combined_data_pila, 'fecha': combined_data_fecha})
-
+# 
     
     
     
@@ -341,3 +273,8 @@ def registro(request):
     return render(request, 'registration/registro.html', data)
 
 # views del resumen
+
+def resumen(request):
+    productos = Producto.objects.all()
+    print(productos)  # Verifica en la consola de tu servidor Django si se están recuperando productos.
+    return render(request, 'templatesop/resumen.html', {'productos': productos})
