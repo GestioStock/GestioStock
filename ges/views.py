@@ -25,6 +25,11 @@ from django.views import View
 from .formUser import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 
+# funciones para el gráfico
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
 class ProductoListCreateView(APIView):
     def post(self, request, format=None):
 
@@ -264,8 +269,23 @@ def registro(request):
 
 def resumen(request):
     productos = Producto.objects.all()
-    print(productos)  # Verifica en la consola de tu servidor Django si se están recuperando productos.
-    return render(request, 'templatesop/resumen.html', {'productos': productos})
+
+    # Crear un gráfico simple
+    plt.bar(productos.values_list('nombreProduc', flat=True), productos.values_list('cantidadProducto', flat=True))
+    plt.xlabel('Nombre del Producto')
+    plt.ylabel('Cantidad')
+    plt.title('Resumen de Productos')
+
+    # Guardar la imagen del gráfico en un búfer de bytes
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+
+    # Convertir la imagen a base64 para incrustarla en la plantilla HTML
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+    # Pasa la ruta de la imagen base64 a la plantilla HTML
+    return render(request, 'templatesop/resumen.html', {'productos': productos, 'chart_image': image_base64})
 
 # resumen de la javiera
 class ProductoListAPI(View):

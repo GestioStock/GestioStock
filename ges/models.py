@@ -23,8 +23,6 @@ class Producto(models.Model):
 
     subcate = models.CharField(max_length=50)
 
-    product_pila = models.CharField( max_length=50, blank=True)
-    product_fecha = models.CharField( max_length=50, blank=True)
 
 
 class EntradaProducto(models.Model):
