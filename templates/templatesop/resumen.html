@@ -58,25 +58,20 @@
                                     <th>Nombre</th>
                                     <th>Detalle</th>
                                     <th>Sub Categoría</th>
-                                    <th>Nidea</th>
                                     <!-- Agrega más columnas según los campos de tu modelo Producto -->
                                 </tr>
                             </thead>
                             <tbody>
                                 <!--  -->
                                 {% for producto in productos %}
-                                <tr>
-                                    <td>{{ producto.idProduc }}</td>
-                                    <td>{{ producto.nombreProduc }}</td>
-                                    <td>{{ producto.Detalle }}</td>
-                                    <td>{{ producto.subcate }}</td>
-                                    <td>{{ producto.product_fecha.fechaElavoracionP }}</td>
-                                    <td>{{ producto.product_fecha.fechaVencimientoP }}</td>
-                                    <td>{{ producto.product_pila.ControlPila }}</td>
-                                    <td>{{ producto.product_pila.PesoPila }}</td>
-                                    <!-- Agrega más celdas según los campos de tu modelo Producto -->
-                                </tr>
-                            {% endfor %}
+                                    <tr>
+                                        <td>{{ producto.idProduc }}</td>
+                                        <td>{{ producto.nombreProduc }}</td>
+                                        <td>{{ producto.Detalle }}</td>
+                                        <td>{{ producto.subcate }}</td>
+                                        <!-- Agrega más celdas según los campos de tu modelo Producto -->
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
